@@ -43,12 +43,30 @@ router.post('/login', (req, res) => {
         req.session.user = user;
         res.status(200).json({ message: `Welcome ${user.username}!` });
       } else {
-        res.status(401).json({ message: 'Invalid Credentials' });
+        res.status(401).json({ message: 'Invalid credentials got submitted.' });
       }
     })
     .catch(error => {
       res.status(500).json(error);
     });
+});
+
+router.get('/logout', (req, res) => {
+  if (req.session) {
+    req.session.destroy(error => {
+      if (error) {
+        res.json({
+          message: 'There was an error during the logout.',
+        });
+      } else {
+        res.status(200).json({ message: 'Logout was successful!' });
+      }
+    });
+  } else {
+    res
+      .status(200)
+      .json({ message: 'Login did not happen. So logout is not necessary.' });
+  }
 });
 
 module.exports = router;
