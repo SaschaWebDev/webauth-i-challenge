@@ -1,7 +1,3 @@
-const bcrypt = require('bcryptjs');
-
-const Users = require('../users/user-model.js');
-
 module.exports = {
   validateSessionLoggedIn,
   validateUserByBody,
