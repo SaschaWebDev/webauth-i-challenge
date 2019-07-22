@@ -4,6 +4,8 @@
   "description": "Sascha Majewsky",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
+    "server": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -16,5 +18,13 @@
   "bugs": {
     "url": "https://github.com/SaschaWebDev/webauth-i-challenge/issues"
   },
-  "homepage": "https://github.com/SaschaWebDev/webauth-i-challenge#readme"
+  "homepage": "https://github.com/SaschaWebDev/webauth-i-challenge#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "helmet": "^3.19.0",
+    "knex": "^0.19.0",
+    "knex-cleaner": "^1.2.1",
+    "moment": "^2.24.0",
+    "sqlite3": "^4.0.9"
+  }
 }
