@@ -3,30 +3,18 @@ const bcrypt = require('bcryptjs');
 const Users = require('../users/user-model.js');
 
 module.exports = {
-  validateUserByHeader,
+  validateSessionLoggedIn,
   validateUserByBody,
 };
 
-function validateUserByHeader(req, res, next) {
-  const { username, password } = req.headers;
-
-  if (username && password) {
-    Users.findByUsername(username)
-      .then(user => {
-        console.log('USER', user);
-        console.log(user.password);
-        console.log(bcrypt.compareSync(password, user.password));
-        if (user && bcrypt.compareSync(password, user.password)) {
-          next();
-        } else {
-          res.status(401).json({ message: 'Invalid credentials.' });
-        }
-      })
-      .catch(error => {
-        res.status(500).json(error);
-      });
+function validateSessionLoggedIn(req, res, next) {
+  // There is only a user in the session when there was a successful login
+  if (req.session && req.session.user) {
+    next();
   } else {
-    res.status(400).json({ message: 'Please provide valid credentials.' });
+    res
+      .status(401)
+      .json({ message: 'Please first login before accessing our services.' });
   }
 }
 

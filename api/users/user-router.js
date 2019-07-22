@@ -8,7 +8,7 @@ const router = express.Router();
 const AuthMiddleware = require('../middleware/auth-middleware.js');
 
 // GET ALL USERS (Login Protected)
-router.get('/', AuthMiddleware.validateUserByHeader, async (req, res) => {
+router.get('/', AuthMiddleware.validateSessionLoggedIn, async (req, res) => {
   Users.find()
     .then(users => {
       res.json(users);
@@ -40,6 +40,7 @@ router.post('/login', (req, res) => {
   Users.findByUsername(username)
     .then(user => {
       if (user && bcrypt.compareSync(password, user.password)) {
+        req.session.user = user;
         res.status(200).json({ message: `Welcome ${user.username}!` });
       } else {
         res.status(401).json({ message: 'Invalid Credentials' });

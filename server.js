@@ -11,7 +11,7 @@ const sessionConfig = {
   name: 'monkey', // default is 'sid' by changing the name we don't expose the  used library
   secret: 'keep it secret, keep it safe!', // should be in environment variable
   cookie: {
-    maxAge: 1000 * 30, // cookie will stay valid for 30 seconds
+    maxAge: 60000 * 30, // cookie will stay valid for 30 minutes
     secure: false, // cookie only over HTTPS? Always true in production!
     httpOnly: true, // No JavaScript on the client get access to the cookie
   },
