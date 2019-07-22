@@ -3,16 +3,19 @@ const bcrypt = require('bcryptjs');
 const Users = require('../users/user-model.js');
 
 module.exports = {
-  validateGetUser,
-  validatePostUser,
+  validateUserByHeader,
+  validateUserByBody,
 };
 
-function validateGetUser(req, res, next) {
+function validateUserByHeader(req, res, next) {
   const { username, password } = req.headers;
 
   if (username && password) {
-    Users.findByUsername({ username })
+    Users.findByUsername(username)
       .then(user => {
+        console.log('USER', user);
+        console.log(user.password);
+        console.log(bcrypt.compareSync(password, user.password));
         if (user && bcrypt.compareSync(password, user.password)) {
           next();
         } else {
@@ -27,4 +30,4 @@ function validateGetUser(req, res, next) {
   }
 }
 
-function validatePostUser(req, res, next) {}
+function validateUserByBody(req, res, next) {}

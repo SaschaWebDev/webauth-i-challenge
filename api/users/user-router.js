@@ -5,17 +5,15 @@ const Users = require('./user-model.js');
 
 const router = express.Router();
 
-// GET ALL USERS
-router.get('/', async (req, res) => {
-  try {
-    const users = await Users.find();
-    res.status(200).json(users);
-  } catch (error) {
-    res.status(500).json({
-      error:
-        'There was an error finding all users. Sorry, that is on us!' + error,
-    });
-  }
+const AuthMiddleware = require('../middleware/auth-middleware.js');
+
+// GET ALL USERS (Login Protected)
+router.get('/', AuthMiddleware.validateUserByHeader, async (req, res) => {
+  Users.find()
+    .then(users => {
+      res.json(users);
+    })
+    .catch(err => res.send(err));
 });
 
 router.post('/register', (req, res) => {
