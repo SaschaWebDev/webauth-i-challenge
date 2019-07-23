@@ -40,7 +40,7 @@ router.post('/login', (req, res) => {
   Users.findByUsername(username)
     .then(user => {
       if (user && bcrypt.compareSync(password, user.password)) {
-        req.session.user = user;
+        req.session.user = user.username;
         res.status(200).json({ message: `Welcome ${user.username}!` });
       } else {
         res.status(401).json({ message: 'Invalid credentials got submitted.' });
@@ -53,19 +53,19 @@ router.post('/login', (req, res) => {
 
 router.get('/logout', (req, res) => {
   if (req.session) {
-    req.session.destroy(error => {
-      if (error) {
-        res.json({
-          message: 'There was an error during the logout.',
+    // here we logout
+    req.session.destroy(err => {
+      if (err) {
+        res.status(500).json({
+          message:
+            'you can checkout any time you like, but you can never leave...',
         });
       } else {
-        res.status(200).json({ message: 'Logout was successful!' });
+        res.status(200).json({ message: 'bye....' });
       }
     });
   } else {
-    res
-      .status(200)
-      .json({ message: 'Login did not happen. So logout is not necessary.' });
+    res.status(200).json({ message: 'ok, bye' });
   }
 });
 

@@ -3,6 +3,8 @@ const helmet = require('helmet');
 const moment = require('moment');
 const session = require('express-session');
 
+const KnexSessionStore = require('connect-session-knex')(session);
+
 const UsersRouter = require('./api/users/user-router.js');
 
 const server = express();
@@ -17,6 +19,14 @@ const sessionConfig = {
   },
   resave: false, // Recreate a session even if it hasn't changed?
   saveUninitialized: false, // GDPR compliance does not allow setting cookies by default! Only true when user accepted!
+  // GOTCHA: remember to "new" it up
+  store: new KnexSessionStore({
+    knex: require('./data/db-config.js'),
+    tablename: 'sessions',
+    createtable: true,
+    sidfieldname: 'sid',
+    clearInterval: 1000 * 60 * 60, // deletes expired sessions every hour
+  }),
 };
 
 server.get('/', (req, res) => {
